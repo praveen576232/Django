@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login V2</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+	 <link rel="stylesheet" href="{% static 'style/loginpage.css' %}">
+    
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<h2 id="error" style="color: red; display: none;" >Usre id or password is wrong</h2>
+				<form class="login100-form validate-form" onsubmit="return submitform()" action="{% url 'Longin' %}" method="POST" id="form">
+				  {% csrf_token %}
+					<span class="login100-form-title p-b-26">
+						Login Hear!
+					</span>
+					
+
+					<div class="wrap-input100 validate-input" >
+						<input class="input100" type="text" name="user" id="username" onclick="ResetText()">
+						<span class="focus-input100" data-placeholder="Enter User id" id="userdata" ></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						<span class="btn-show-pass">
+							<i class="zmdi zmdi-eye"></i>
+						</span>
+						<input class="input100" type="password" name="password" id="password" onclick="ResetText()">
+						<span class="focus-input100" data-placeholder="Password" id="pass"></span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn">
+								Login
+							</button>
+						</div>
+					</div>
+
+					<div class="text-center p-t-115">
+						<span class="txt1">
+							Don’t have an account?
+						</span>
+
+						<a class="txt2" href="{% url 'registerpage'%}">
+							Sign Up
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+	{% if messages %}
+	{% for message in messages %}
+   
+	<script>
+	  var user = document.getElementById("userdata")
+	
+	  var username = document.getElementById("username")
+	  var pass = document.getElementById("pass")
+	  var error = document.getElementById("error")
+	  user.setAttribute("data-placeholder","user id or password is worng.")
+	  error.style.display="block"
+	  user.style.border ="1px solid red"
+	  pass.style.border ="1px solid red"
+	  username.value=""
+	</script>
+	{% endfor %}
+	{% endif %}
+
+
+<script>
+
+function ResetText(){
+var pass = document.getElementById("pass")
+var form = document.getElementById("form")
+var user = document.getElementById("userdata")
+var error = document.getElementById("error")
+pass.setAttribute("data-placeholder","Enter Password")
+error.style.display="none"
+
+user.setAttribute("data-placeholder","Enter user id")
+form.style.border ="none"
+pass.style.border ="none"
+user.style.border="none"
+}
+
+function submitform(){
+
+var user = document.getElementById("userdata")
+var username = document.getElementById("username")
+
+var password = document.getElementById("password")
+var form = document.getElementById("form")
+var pass = document.getElementById("pass")
+
+
+if(username.value == ""){
+user.setAttribute("data-placeholder","please enter user id")
+user.style.border ="1px solid red"
+	return false;
+}
+if(password.value == ""){
+	
+	pass.setAttribute("data-placeholder","please enter password")
+	pass.style.border ="1px solid red"
+	return false;
+}
+if(password.value.length > 6){
+ return true
+}else{
+	password.value=""
+	
+	pass.setAttribute("data-placeholder","password is wrong")
+	pass.style.border ="1px solid red"
+	return false;
+}
+}
+
+</script>
+
+</body>
+</html>

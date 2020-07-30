@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Register</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	 <link rel="stylesheet" href="{% static 'style/loginpage.css' %}">
+	
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" onsubmit="return submitform()" action="{% url 'register' %}" method="POST" id="form">
+				     {% csrf_token %}
+					<span class="login100-form-title p-b-26">
+						Register Hear
+					</span>
+					
+
+					  <div class="wrap-input100 validate-input" id="username">
+                        <input class="input100" type="text" name="user" id="username" onclick="ResetText()">
+                        <span class="focus-input100" data-placeholder="Enter User id" id="userdata"></span>
+                      </div>
+                        
+                        
+                      <div class="wrap-input100 validate-input">
+                        <span class="btn-show-pass">
+							<i class="zmdi zmdi-eye"></i>
+						</span>
+                        <input class="input100" type="passs" name="password" id="password" onclick="ResetText()">
+                        <span class="focus-input100" data-placeholder="Enter Password" id="pass"></span>
+                      </div>
+                      
+                      <div class="wrap-input100 validate-input">
+                        <span class="btn-show-pass">
+							<i class="zmdi zmdi-eye"></i>
+						</span>
+                        <input class="input100" type="text" id="cpassword" onclick="ResetText()">
+                        <span class="focus-input100" data-placeholder="Conform Password" id="cpass"></span>
+                      </div>
+                        
+
+					
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn">
+								Register
+							</button>
+						</div>
+					</div>
+                    
+                    	<div class="text-center p-t-115">
+						<span class="txt1">
+							Alraedy have an account?
+						</span>
+
+						<a class="txt2" href="{% url 'Longin' %}">
+							Sign In
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+		{% if messages %}
+		{% for message in messages %}
+	   
+		<script>
+		  var user = document.getElementById("userdata")
+		  var username = document.getElementById("username")
+		  user.setAttribute("data-placeholder","user id alerdy taken. please try another one")
+		  user.style.border ="1px solid red"
+		  username.value=""
+		</script>
+		{% endfor %}
+		{% endif %}
+  
+	
+<script>
+
+function ResetText(){
+	var pass = document.getElementById("pass")
+	var cpass = document.getElementById("cpass")
+	var user = document.getElementById("userdata")
+	pass.setAttribute("data-placeholder","Enter Password")
+	cpass.setAttribute("data-placeholder","Conform Password")
+	
+	user.setAttribute("data-placeholder","Enter user id")
+	cpass.style.border ="none"
+	pass.style.border ="none"
+	user.style.border="none"
+}
+
+function submitform(){
+	
+   var user = document.getElementById("userdata")
+   var username = document.getElementById("username")
+
+	var password = document.getElementById("password")
+	var Cpassword = document.getElementById("cpassword")
+	var pass = document.getElementById("pass")
+	var cpass = document.getElementById("cpass")
+
+	if(username.value == ""){
+user.setAttribute("data-placeholder","please enter user id")
+user.style.border ="1px solid red"
+		return false;
+	}
+	if(password.value == ""){
+		Cpassword.value =""
+		pass.setAttribute("data-placeholder","please enter password")
+		pass.style.border ="1px solid red"
+		return false;
+	}
+    if(password.value.length > 6){
+      if(password.value === Cpassword.value){
+		  
+		  return true;
+	  }else{
+		password.value=""
+		Cpassword.value =""
+		cpass.setAttribute("data-placeholder","password and conform password not same")
+	    cpass.style.border ="1px solid red"
+		
+	
+		  return false;
+	  }
+	}else{
+		password.value=""
+		Cpassword.value =""
+		pass.setAttribute("data-placeholder","password length should be grater than 6")
+		pass.style.border ="1px solid red"
+		return false;
+	}
+}
+
+</script>
+
+
+</body>
+</html>

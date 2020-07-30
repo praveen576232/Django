@@ -1,0 +1,199 @@
+{% load static %}
+<html >
+    <head>
+        <link rel="stylesheet" href="{% static 'style/timeTable.css' %}">
+        <link rel="stylesheet" href="{% static 'style/button.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      
+    </head>
+    <body onload="loadTable()">
+         <div>
+       <div class="ibutton">
+        <label>Row</label>
+
+        <input type="number" class="rowAndCol" value="0"  maxlength="3" pattern="\d{3}" required id="row">
+
+        <button class="btn" onclick="addRow()"><i class="fa fa-plus-circle" style="font-size:36px;"></i></button>
+        <button class="btn" onclick="removeRow()"><i class="fa fa-minus-circle" style="font-size:36px"></i></button>
+        <br>
+        <label>Coloum</label>
+
+        <input type="number" class="rowAndCol"  value="0"  maxlength="3" pattern="\d{3}" required id="col">
+        <button class="btn" onclick="addCol()"><i class="fa fa-plus-circle" style="font-size:36px;"></i></button>
+        <button class="btn" onclick="removeCol()"><i class="fa fa-minus-circle" style="font-size:36px"></i></button>
+       </div>
+        
+        <div class="DivButton">
+         <ul>
+           <li><button onclick="createTable()">Create Table</button></li><br>
+           <li><button onclick="removeTable()">Remove Table</button></li><br>
+           <li> <button onclick="mergecell()">Select Cells</button></li><br>
+           <li> <button id="fontchange">Change Bold Font </button></li><br>
+           <li> <button id="mergeColsBtn">Merag Horizontal</button></li><br>
+           <li><button id="mergeRowsBtn"> Merge Vertical</button></li><br>
+           <li>
+            <form id="form">
+              {% csrf_token %}
+              <button  type="submit"  >Save Table</button>
+              </form>
+
+           </li>
+         </ul>
+        </div>
+         <div class="logout">
+          <form id="logoutform" onsubmit="return logout()" method="POST" action="{% url 'logpage' %}">
+            {% csrf_token %}
+            <button  type="submit"  >LogOut?</button>
+            </form>
+         
+         </div>
+         
+        
+    </div>
+
+<div style="position: absolute; left: 190px; top: 80px;">
+  <table id="table">   
+   
+    
+  </table>
+</div>
+ 
+
+
+
+<input id="Tdata" hidden value="{{ data }}" >
+ 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'javaScript/timeTable.js' %}"></script>
+  
+
+
+
+
+
+
+
+
+    
+<script>
+    
+const form = document.getElementById("form");
+
+form.addEventListener("submit",submitHandler);
+
+function submitHandler(e){
+   e.preventDefault();
+   var table = document.getElementById("table");
+   var Tabledata = [] ;  
+  var rows = table.getElementsByTagName("tr");
+  for (i = 0; i < rows.length; i++) {
+    var data =[] ;
+      var currentRow = table.rows[i];
+      
+   var len =      currentRow.getElementsByTagName("td").length;
+   var td = currentRow.getElementsByTagName("td");
+      for(var j =0 ; j<len ; j++){
+        var input = td[j].getElementsByTagName("input")[0];
+        var colspan =  td[j].getAttribute("colspan");
+        var rowspan =  td[j].getAttribute("rowspan");
+        var font = input.style.fontWeight
+        data.push({"data":input.value,"colspan":colspan,"rowspan":rowspan,"font":font})
+      } 
+   Tabledata.push({"coldata":data}); 
+
+
+}
+if(Tabledata!=null){
+  var fData = JSON.stringify({"table":Tabledata})
+  console.log(fData);
+  $.ajax({
+    type:'POST',
+    url:"{% url 'table' %}",
+    data:{
+        "data":fData,
+        "csrfmiddlewaretoken" : "{{csrf_token}}"
+
+    },
+    dataType:'json',
+    success:function(data){
+        if(data.msg === 'Success'){
+        alert("Table Saved");
+        }
+    },
+    error:function(err){
+      alert("Somthing went wrong while Save Table")
+    }
+    
+})
+}else{
+  alert("You are not crered a table please create a table brfore you save")
+}
+
+
+ 
+}
+
+
+
+
+
+
+
+
+   
+
+function logout(){
+
+   var table = document.getElementById("table");
+   var Tabledata = [] ;  
+  var rows = table.getElementsByTagName("tr");
+  for (i = 0; i < rows.length; i++) {
+    var data =[] ;
+      var currentRow = table.rows[i];
+      
+   var len =      currentRow.getElementsByTagName("td").length;
+   var td = currentRow.getElementsByTagName("td");
+      for(var j =0 ; j<len ; j++){
+        var input = td[j].getElementsByTagName("input")[0];
+        var colspan =  td[j].getAttribute("colspan");
+        var rowspan =  td[j].getAttribute("rowspan");
+        var font = input.style.fontWeight
+        data.push({"data":input.value,"colspan":colspan,"rowspan":rowspan,"font":font})
+      } 
+   Tabledata.push({"coldata":data}); 
+
+
+}
+if(Tabledata!=null){
+  var fData = JSON.stringify({"table":Tabledata})
+  console.log(fData);
+  $.ajax({
+    type:'POST',
+    url:"{% url 'logout' %}",
+    data:{
+        "data":fData,
+        "csrfmiddlewaretoken" : "{{csrf_token}}"
+
+    },
+    dataType:'json',
+    success:function(data){
+      if(data.msg === 'Success'){
+     return true;
+      }
+  },
+  error:function(err){
+   return false;
+  }
+    
+})
+}else{
+  return false;
+}
+
+
+ 
+}
+</script>
+    </body>
+</html>

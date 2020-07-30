@@ -1,0 +1,71 @@
+/* body{
+    background-color: blanchedalmond;
+}
+.btn{
+    background-color: blanchedalmond;
+    border: none;
+}
+.rowAndCol{
+   width: 50px;
+
+}
+table{
+    width: 80%;
+    margin: 30px auto;
+    border-width: 3px;
+    border-collapse: collapse;
+}
+
+td,th input{
+   
+    border: none;
+    font-style: normal;
+    font-weight: normal;
+    background-color: blanchedalmond;
+    widows: 500px;
+}
+
+
+textarea:focus,input:focus{
+    outline: none;
+    
+} */
+
+
+
+body{
+    background-color: blanchedalmond;
+}
+.btn{
+    background-color: blanchedalmond;
+    border: none;
+}
+.rowAndCol{
+   width: 50px;
+
+}
+
+#table td {
+   padding: 10px;
+   border: solid 1px #CCC;
+   cursor: default;
+}
+
+#table td.selected {
+    border-color: red;
+}
+
+td,th input{
+   
+    border: none;
+    font-style: normal;
+    font-weight: normal;
+    background-color: blanchedalmond;
+    widows: 500px;
+}
+
+
+textarea:focus,input:focus{
+    outline: none;
+    
+}
