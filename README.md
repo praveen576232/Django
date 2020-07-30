@@ -7,5 +7,15 @@ front-end - javascript,html,css
 backend -django
 database  -sqllite3
 
-#project info
-(just a note) :when you merage table cell. first you have to select a cell by clicking select cell button than click on the cell and go on  (same aplays to change font weigth).
+
+#admin info
+url is = '/admin'
+username = admin
+password = admin
+
+
+
+#Note
+when you merage table cell. first you have to select a cell by clicking select cell button than click on the cell and go on  (same aplays to change font weigth).
+
+its in a debug mode.
